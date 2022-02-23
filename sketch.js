@@ -2,25 +2,29 @@ let telar;
 
 function setup() {
     pseudorandom.fxhash();
-    noiseSeed(fxhash);
 
-    const telarWidth  = 300;
-    const telarHeight = 300; 
+    const telarWidth = telarHeight = pseudorandom.integer(350, 500); 
 
     telar = new Telar(telarWidth, telarHeight);
-  
-    telar.setThreadingColors(Telar.generateColorSeries(telarWidth, ["#efb702", "#47acf0", "#358f49", "#ff9b9b", "#f64000", "#222222"], [15, 25, 30]));
-    telar.setThreadingSeries(Telar.generateNumberSeries(telarWidth, [1, 2, 3, 4]));
-    
-    telar.setTreadlingColors(Telar.generateColorSeries(telarHeight, ["#111111", "#358f49", "#47acf0", "#f64000", "#f0e7d8"], [1, 5, 10, 15, 25, 40]));
-    telar.setTreadlingSeries(Telar.generateNumberSeries(telarHeight, [4, 3, 2, 1]));
 
-    telar.setTieUp([
-        [1, 0, 0, 1], 
-        [0, 1, 1, 0], 
-        [0, 1, 1, 0], 
-        [1, 0, 0, 1],
-    ]);
+    const weavePattern = staticPatterns[4];
+    console.log(weavePattern);
+    // telar.setThreadingColors(Telar.generateColorSeries(telarWidth, ["#efb702", "#47acf0", "#358f49", "#ff9b9b", "#f64000", "#222222"], [15, 25, 30]));
+    telar.setThreadingColors(Telar.generateColorSeries(telarWidth, ["#47acf0", "#358f49"], [40]));
+    telar.setThreadingSeries(Telar.generateNumberSeries(telarWidth, weavePattern.threading));
+    
+    // telar.setTreadlingColors(Telar.generateColorSeries(telarHeight, ["#111111", "#358f49", "#47acf0", "#f64000", "#f0e7d8"], [1, 5, 10, 15, 25, 40]));
+    telar.setTreadlingColors(Telar.generateColorSeries(telarHeight, ["#efb702", "#f64000", "#ff9b9b", "#358f49", "#f64000", "#222222"], [1,1,2,3,5,8,13,21,34,55]));
+    telar.setTreadlingSeries(Telar.generateNumberSeries(telarHeight, weavePattern.treadling));
+
+    telar.setTieUp(weavePattern.tieUp);
+
+    // telar.setTieUp([
+    //     [1, 0, 0, 1], 
+    //     [0, 1, 1, 1], 
+    //     [0, 1, 1, 0], 
+    //     [1, 0, 0, 1],
+    // ]);
 
     createCanvas(windowWidth, windowHeight);
     noLoop();
@@ -29,6 +33,20 @@ function setup() {
 function draw() {
     background("#000");
     telar.weave();
+
+    addGrain(10);
+}
+
+function addGrain(n){
+    loadPixels();
+    for(let e = 0; e < width * pixelDensity() * (height * pixelDensity()) * 4; e += 4) {
+        let i = map(pseudorandom.decimal(), 0, 1, -n, n);
+        pixels[e]     = pixels[e] + i,
+        pixels[e + 1] = pixels[e + 1] + i,
+        pixels[e + 2] = pixels[e + 2] + i,
+        pixels[e + 3] = pixels[e + 3] + i;
+    }
+    updatePixels();
 }
 
 function windowResized() {
@@ -42,6 +60,6 @@ function keyPressed() {
   
     if (key == 's' || key == 'S') {
         resizeCanvas(DESIRED_SIZE_IN_PIXELS / pixelDensity(), DESIRED_SIZE_IN_PIXELS / pixelDensity());
-        saveCanvas('prefix_' + fxhash, 'png');
+        saveCanvas('telar_' + fxhash, 'png');
     }
 }

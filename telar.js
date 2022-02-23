@@ -92,7 +92,7 @@ class Telar {
     render(cross) {
         noStroke();
     
-        const looseness = 0.1;
+        const looseness = 0.2;
         const drawCrossThread = (thread, frame) => {
             const lx = frame.width * looseness;
             const ly = frame.width * looseness;
@@ -129,9 +129,8 @@ class Telar {
             for (let i = 0; i < pattern.length; i++) {
                 const current = pattern[i];
                 for (let j = 0; j < current; j++) {
-                    console.log(10 * noise(i * 0.04), 10 * noise(i * 0.04));
-
-                    series.push(colors[colorIndex % colors.length]);
+                    series.push(this.noiseColor(colors[colorIndex % colors.length], 
+                        series.length));
                     if(series.length == targetLength) {
                         return series;
                     }      
@@ -139,6 +138,14 @@ class Telar {
                 colorIndex++;
             }
         }
+    }
+
+    static noiseColor(originalColor) {
+        let colorNoise = pseudorandom.decimal(-5, 5);
+        const alteredColor = new Color(originalColor);
+        alteredColor.lightness(colorNoise / 100);
+
+        return color(alteredColor.r, alteredColor.g, alteredColor.b);
     }
 
     static generateNumberSeries(targetLength, pattern) {

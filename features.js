@@ -1,12 +1,8 @@
 function calculateFeatures() {
-    const rays = pseudorandom.pick([128, 256, 512, 1024]);
-    const mode = pseudorandom.pick(["Black", "White", "Color"]);
-    const spin = pseudorandom.pick(["Left", "Right"]);
+    const colorPalette = pseudorandom.pick(["Colorful"]);
 
     const features = {
-        "Star": mode,
-        "Rays": rays,
-        "Spin": spin,
+        "Colors": colorPalette,
     }
 
     // console.log(JSON.stringify(features, null, 4));
