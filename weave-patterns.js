@@ -1,6 +1,5 @@
-const STYLE_BIG_TILE = "BIG_TILE";
+const STYLE_BIG_AREA = "BIG_AREA";
 const STYLE_SMALL_TILES = "SMALL_TILES";
-const STYLE_TINY = "TINY";
 const STYLE_TEXTURE = "TEXTURE";
 
 const BASIC_SERIES_01 = [4,3,2,1];
@@ -39,7 +38,7 @@ const staticPatterns = [
     },
     // 01 Squares
     {
-        style: STYLE_TINY,
+        style: STYLE_TEXTURE,
         threading: [1, 2, 3, 4],
         treadling: [1, 2, 3, 4],
         tieUp: [
@@ -69,6 +68,7 @@ const staticPatterns = [
     },
     // 03 Tribal
     {
+        style: STYLE_BIG_AREA,
         threading: [1,2,3,4,1,2,3,4,1,2,3,4, 
             5,6,7,8,7,6,5,6,7,8, 
             5,6,7,8, 5,6,7,8,7,6,5, 8,7,6,5, 
@@ -96,6 +96,7 @@ const staticPatterns = [
     },
     // 04 Mosaic
     {
+
         threading: [ 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,
                      15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,16 ],
         treadling: [ 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,
@@ -154,4 +155,9 @@ const staticPatterns = [
     },
 ];
 
+const basicPatterns = [];
 
+
+
+
+const weavePattern = staticPatterns.join(basicPatterns);

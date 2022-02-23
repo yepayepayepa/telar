@@ -90,6 +90,8 @@ class Telar {
     }
 
     render(cross) {
+        const HI_RES_CORRECTION = 0.9;
+
         noStroke();
     
         const looseness = 0.2;
@@ -99,10 +101,10 @@ class Telar {
 
             fill(thread.color);
             if(thread.orientation === THREAD_VERTICAL) {
-                rect(dimensionlessx(frame.x + lx), dimensionlessy(frame.y - ly), dimensionless(frame.width - lx * 2), dimensionless(frame.height + lx * 2));
+                rect(dimensionlessx(frame.x + lx), dimensionlessy(frame.y - ly * HI_RES_CORRECTION), dimensionless(frame.width - lx * 2), dimensionless(frame.height + lx * 2 * HI_RES_CORRECTION));
             }
             if(thread.orientation === THREAD_HORIZONTAL) {
-                rect(dimensionlessx(frame.x - lx), dimensionlessy(frame.y + ly), dimensionless(frame.width + lx * 2), dimensionless(frame.height - ly * 2));
+                rect(dimensionlessx(frame.x - lx * HI_RES_CORRECTION), dimensionlessy(frame.y + ly), dimensionless(frame.width + lx * 2 * HI_RES_CORRECTION), dimensionless(frame.height - ly * 2));
             }
         };
 
@@ -141,9 +143,12 @@ class Telar {
     }
 
     static noiseColor(originalColor) {
-        let colorNoise = pseudorandom.decimal(-5, 5);
+        const NOISE_AMOUNT = 12;
         const alteredColor = new Color(originalColor);
-        alteredColor.lightness(colorNoise / 100);
+
+        alteredColor.r += min(max(pseudorandom.integer(-NOISE_AMOUNT, NOISE_AMOUNT), 0), 255);
+        alteredColor.g += min(max(pseudorandom.integer(-NOISE_AMOUNT, NOISE_AMOUNT), 0), 255);
+        alteredColor.b += min(max(pseudorandom.integer(-NOISE_AMOUNT, NOISE_AMOUNT), 0), 255);
 
         return color(alteredColor.r, alteredColor.g, alteredColor.b);
     }

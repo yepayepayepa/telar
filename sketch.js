@@ -8,7 +8,7 @@ function setup() {
     telar = new Telar(telarWidth, telarHeight);
 
     const weavePattern = staticPatterns[4];
-    console.log(weavePattern);
+    
     // telar.setThreadingColors(Telar.generateColorSeries(telarWidth, ["#efb702", "#47acf0", "#358f49", "#ff9b9b", "#f64000", "#222222"], [15, 25, 30]));
     telar.setThreadingColors(Telar.generateColorSeries(telarWidth, ["#47acf0", "#358f49"], [40]));
     telar.setThreadingSeries(Telar.generateNumberSeries(telarWidth, weavePattern.threading));
@@ -19,12 +19,6 @@ function setup() {
 
     telar.setTieUp(weavePattern.tieUp);
 
-    // telar.setTieUp([
-    //     [1, 0, 0, 1], 
-    //     [0, 1, 1, 1], 
-    //     [0, 1, 1, 0], 
-    //     [1, 0, 0, 1],
-    // ]);
 
     createCanvas(windowWidth, windowHeight);
     noLoop();
