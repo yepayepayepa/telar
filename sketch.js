@@ -3,32 +3,26 @@ let telar;
 function setup() {
     pseudorandom.fxhash();
 
-    const telarWidth = telarHeight = 400; 
+    const TELAR_RESOLUTION = 400;
 
-    telar = new Telar(telarWidth, telarHeight);
+    const telarBuilder = new TelarBuilder(TELAR_RESOLUTION);
 
-    const weavePattern = weavePatterns[128];
-    
-    // telar.setThreadingColors(Telar.generateColorSeries(telarWidth, ["#efb702", "#47acf0", "#358f49", "#ff9b9b", "#f64000", "#222222"], [15, 25, 30]));
-    telar.setThreadingColors(telar.generateColorSeries(telarWidth, ["#47acf0", "#358f49"], [40]));
-    telar.setThreadingSeries(telar.generateNumberSeries(telarWidth, weavePattern.threading));
-    
-    // telar.setTreadlingColors(Telar.generateColorSeries(telarHeight, ["#111111", "#358f49", "#47acf0", "#f64000", "#f0e7d8"], [1, 5, 10, 15, 25, 40]));
-    telar.setTreadlingColors(telar.generateColorSeries(telarHeight, ["#efb702", "#f64000", "#ff9b9b", "#358f49", "#f64000", "#222222"], [1,1,2,3,5,8,13,21,34,55]));
-    telar.setTreadlingSeries(telar.generateNumberSeries(telarHeight, weavePattern.treadling));
+    telarBuilder.addWeavePatterns(specialPatterns);
+    telarBuilder.addWeavePatterns(basic4x4Patterns);
 
-    telar.setTieUp(weavePattern.tieUp);
+    telarBuilder.addColorPalettes(colorPalettes);
 
+    telar = telarBuilder.build({ x: 0, y: 0, width: 400, height: 400,});
 
     createCanvas(windowWidth, windowHeight);
     noLoop();
 }
 
 function draw() {
-    background("#000");
+    background("#ebedf1");
     telar.weave();
 
-    addGrain(10);
+    addGrain(15);
 }
 
 function addGrain(n){
