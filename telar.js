@@ -172,10 +172,15 @@ class TelarBuilder {
         this.resolution = resolution;
         this.weavePatterns = [];
         this.colorPalettes = [];
+        this.colorPatterns = [];
     }
 
     addColorPalettes(colorPalettes) {
         this.colorPalettes = this.colorPalettes.concat(colorPalettes);
+    }
+
+    addColorPatterns(colorPatterns) {
+        this.colorPatterns = this.colorPatterns.concat(colorPatterns);
     }
 
     addWeavePatterns(weavePatterns) {
@@ -183,8 +188,8 @@ class TelarBuilder {
     }
 
     build(dimensions) {
-        const telarWidth = 400;
-        const telarHeight = 400; 
+        const telarWidth = 8;
+        const telarHeight = 8; 
 
         const telar = new Telar(telarWidth, telarHeight);
     
@@ -201,15 +206,22 @@ class TelarBuilder {
         }
 
         let selectedPalette = this.colorPalettes[pseudorandom.integer(0, this.colorPalettes.length - 1)];
-        selectedPalette = this.colorPalettes[this.colorPalettes.length - 1];
+        let selectedThreadPattern = this.colorPatterns[pseudorandom.integer(0, this.colorPatterns.length - 1)];
+        let selectedTreadlePattern = this.colorPatterns[pseudorandom.integer(0, this.colorPatterns.length - 1)];
 
+
+        // selectedPalette = this.colorPalettes[this.colorPalettes.length - 1];  // FOR TESTING ONLY
+        // selectedThreadPattern = this.colorPatterns[this.colorPatterns.length - 1];  // FOR TESTING ONLY
+        // selectedTreadlePattern = this.colorPatterns[this.colorPatterns.length - 1];  // FOR TESTING ONLY
+
+        console.log(selectedThreadPattern, selectedTreadlePattern);
         
         telar.setThreadingColors(telar.generateColorSeries(telarHeight, selectColorsFromPalette(selectedPalette, pseudorandom.integer(1, 10)),
-            [36]));
+            selectedThreadPattern));
         telar.setThreadingSeries(telar.generateNumberSeries(telarWidth, weavePattern.threading));
         
         telar.setTreadlingColors(telar.generateColorSeries(telarWidth, selectColorsFromPalette(selectedPalette, pseudorandom.integer(1, 10)),
-            [36]));
+            selectedTreadlePattern));
         telar.setTreadlingSeries(telar.generateNumberSeries(telarHeight, weavePattern.treadling));
     
         telar.setTieUp(weavePattern.tieUp);
