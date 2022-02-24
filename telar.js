@@ -119,7 +119,7 @@ class Telar {
      * @param Array pattern the pattern of repetition to be used to fill the threading or treadling with colors
      * @returns 
      */
-    static generateColorSeries(targetLength, colors, pattern) {
+    generateColorSeries(targetLength, colors, pattern) {
         if(pattern == undefined) {
             pattern = new Array(colors.length);
             pattern.fill(1);
@@ -142,7 +142,7 @@ class Telar {
         }
     }
 
-    static noiseColor(originalColor) {
+    noiseColor(originalColor) {
         const NOISE_AMOUNT = 12;
         const alteredColor = new Color(originalColor);
 
@@ -153,7 +153,7 @@ class Telar {
         return color(alteredColor.r, alteredColor.g, alteredColor.b);
     }
 
-    static generateNumberSeries(targetLength, pattern) {
+    generateNumberSeries(targetLength, pattern) {
         const series = [];
         while(series.length < targetLength) {
             for (let i = 0; i < pattern.length; i++) {

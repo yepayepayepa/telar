@@ -1,8 +1,6 @@
 function calculateFeatures() {
-    const colorPalette = pseudorandom.pick(["Colorful"]);
-
     const features = {
-        "Colors": colorPalette,
+        "Tiles": "Many",
     }
 
     // console.log(JSON.stringify(features, null, 4));

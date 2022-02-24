@@ -3,19 +3,19 @@ let telar;
 function setup() {
     pseudorandom.fxhash();
 
-    const telarWidth = telarHeight = pseudorandom.integer(350, 500); 
+    const telarWidth = telarHeight = 400; 
 
     telar = new Telar(telarWidth, telarHeight);
 
-    const weavePattern = staticPatterns[4];
+    const weavePattern = weavePatterns[128];
     
     // telar.setThreadingColors(Telar.generateColorSeries(telarWidth, ["#efb702", "#47acf0", "#358f49", "#ff9b9b", "#f64000", "#222222"], [15, 25, 30]));
-    telar.setThreadingColors(Telar.generateColorSeries(telarWidth, ["#47acf0", "#358f49"], [40]));
-    telar.setThreadingSeries(Telar.generateNumberSeries(telarWidth, weavePattern.threading));
+    telar.setThreadingColors(telar.generateColorSeries(telarWidth, ["#47acf0", "#358f49"], [40]));
+    telar.setThreadingSeries(telar.generateNumberSeries(telarWidth, weavePattern.threading));
     
     // telar.setTreadlingColors(Telar.generateColorSeries(telarHeight, ["#111111", "#358f49", "#47acf0", "#f64000", "#f0e7d8"], [1, 5, 10, 15, 25, 40]));
-    telar.setTreadlingColors(Telar.generateColorSeries(telarHeight, ["#efb702", "#f64000", "#ff9b9b", "#358f49", "#f64000", "#222222"], [1,1,2,3,5,8,13,21,34,55]));
-    telar.setTreadlingSeries(Telar.generateNumberSeries(telarHeight, weavePattern.treadling));
+    telar.setTreadlingColors(telar.generateColorSeries(telarHeight, ["#efb702", "#f64000", "#ff9b9b", "#358f49", "#f64000", "#222222"], [1,1,2,3,5,8,13,21,34,55]));
+    telar.setTreadlingSeries(telar.generateNumberSeries(telarHeight, weavePattern.treadling));
 
     telar.setTieUp(weavePattern.tieUp);
 

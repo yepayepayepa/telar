@@ -2,16 +2,6 @@ const STYLE_BIG_AREA = "BIG_AREA";
 const STYLE_SMALL_TILES = "SMALL_TILES";
 const STYLE_TEXTURE = "TEXTURE";
 
-const BASIC_SERIES_01 = [4,3,2,1];
-const BASIC_SERIES_02 = [4,3,2,1,2,3,4,3,2,1,4,3,2,1];
-const BASIC_SERIES_03 = [1,4,3,2,3,4,1];
-
-const TIEUP_BASIC_4X4 = [
-    [1,1,0,0],
-    [0,1,1,0],
-    [0,0,1,1],
-    [1,0,0,1],
-]
 
 const staticPatterns = [
     // 00 Japanese
@@ -155,9 +145,61 @@ const staticPatterns = [
     },
 ];
 
-const basicPatterns = [];
+const basic4x4Patterns = [];
+
+const basicSeries = [
+    [4,3,2,1],
+    [4,3,2,1,2,3,4,3,2,1,4,3,2,1],
+    [1,4,3,2,3,4,1],
+    [4,3,2,1,2,3],
+    [1,2,2,3,3,4,4,1],
+    [1,2,3,2,3,4,3,4,1,4],
+];
+
+const basicTieUps = [
+[
+    [1,1,0,0],
+    [0,1,1,0],
+    [0,0,1,1],
+    [1,0,0,1],
+],
+[
+    [1,1,0,0],
+    [0,1,0,0],
+    [0,1,1,0],
+    [1,0,0,1],
+],
+[
+    [1,1,0,0],
+    [0,0,0,1],
+    [0,1,0,0],
+    [1,0,0,1],
+],
+[
+    [0,1,0,1],
+    [1,0,1,0],
+    [1,0,0,1],
+    [0,1,1,0],
+],
+];
 
 
+for (let i = 0; i < basicTieUps.length; i++) {
+    const basicTieUp = basicTieUps[i];
+    for (let j = 0; j < basicSeries.length; j++) {
+        const basicThread = basicSeries[j];
+        for (let k = 0; k < basicSeries.length; k++) {
+            const basicTreadle = basicSeries[k];
+            basic4x4Patterns.push({
+                threading: basicThread,
+                treadling: basicTreadle,
+                tieUp: basicTieUp
+            })
+        }
+        
+    }
+}
 
+const weavePatterns = staticPatterns.concat(basic4x4Patterns);
 
-const weavePattern = staticPatterns.join(basicPatterns);
+console.log(weavePatterns);
