@@ -137,7 +137,7 @@ const specialPatterns = [
     },
 ];
 
-const basicSeries = [
+const foursSeries = [
     [4,3,2,1],
     [4,3,2,1,2,3,4,3,2,1,4,3,2,1],
     [1,4,3,2,3,4,1],
@@ -147,7 +147,7 @@ const basicSeries = [
     [1,2,3,4,2,1,4,3,1,2,1,2,3,4,3,4,2,1,2,1,4,3,4,3,1,2,1,2,1,2,3,4,3,4,3,4,2,1,2,1,4,3,4,3, 1,2,3,4,2,1,4,3,1,2,1,2,3,4,3,4,2,1,2,1, 4,3,4,3, 1,2,1,2,1,2,3,4,3,4,3,4],
 ];
 
-const basicTieUps = [
+const foursTieUps = [
 [
     [1,1,0,0],
     [0,1,1,0],
@@ -243,4 +243,4 @@ function combineSeriesWithTieUps(series, tieUps) {
     return result;
 }
 
-const basic4x4Patterns = combineSeriesWithTieUps(basicSeries, basicTieUps);
+const foursPatterns = combineSeriesWithTieUps(foursSeries, foursTieUps);

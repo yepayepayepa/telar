@@ -8,7 +8,7 @@ function setup() {
     const telarBuilder = new TelarBuilder(TELAR_RESOLUTION);
 
     telarBuilder.addWeavePatterns(specialPatterns);
-    telarBuilder.addWeavePatterns(basic4x4Patterns);
+    telarBuilder.addWeavePatterns(foursPatterns);
 
     telarBuilder.addColorPalettes(colorPalettes);
 
@@ -21,7 +21,7 @@ function setup() {
 }
 
 function draw() {
-    background("#ebedf1");
+    background("#fef0d9");
     telar.weave();
     addGrain(15);
     fxpreview();
