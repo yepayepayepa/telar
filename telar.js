@@ -97,15 +97,33 @@ class Telar {
         const looseness = 0.1;
         const drawCrossThread = (thread, frame) => {
             const lx = frame.width * looseness;
-            const ly = frame.width * looseness;
+            const ly = frame.height * looseness;
 
-            fill(thread.color);
             if(thread.orientation === THREAD_VERTICAL) {
+                noStroke();
+                fill(thread.color);
                 rect(dimensionlessx(frame.x + lx), dimensionlessy(frame.y - ly * HI_RES_CORRECTION), dimensionless(frame.width - lx * 2), dimensionless(frame.height + lx * 2 * HI_RES_CORRECTION));
+
+                strokeWeight(0.5);
+                stroke("rgba(0, 0, 0, 0.5)");
+                line(
+                    dimensionlessx(frame.x + lx) + dimensionless(frame.width - lx * 2), dimensionlessy(frame.y - ly * HI_RES_CORRECTION),
+                    dimensionlessx(frame.x + lx) + dimensionless(frame.width - lx * 2), dimensionlessy(frame.y - ly * HI_RES_CORRECTION) + dimensionless(frame.height + lx * 2 * HI_RES_CORRECTION)
+                );
             }
             if(thread.orientation === THREAD_HORIZONTAL) {
+                noStroke();
+                fill(thread.color);
                 rect(dimensionlessx(frame.x - lx * HI_RES_CORRECTION), dimensionlessy(frame.y + ly), dimensionless(frame.width + lx * 2 * HI_RES_CORRECTION), dimensionless(frame.height - ly * 2));
+
+                strokeWeight(0.5);
+                stroke("rgba(0, 0, 0, 0.5)");
+                line(
+                    dimensionlessx(frame.x - lx * HI_RES_CORRECTION), dimensionlessy(frame.y + ly) + dimensionless(frame.height - ly * 2),
+                    dimensionlessx(frame.x - lx * HI_RES_CORRECTION) + dimensionless(frame.width + lx * 2 * HI_RES_CORRECTION), dimensionlessy(frame.y + ly) + dimensionless(frame.height - ly * 2)
+                );
             }
+
         };
 
         drawCrossThread(cross.under, cross.frame);
@@ -145,11 +163,7 @@ class Telar {
     noiseColor(originalColor) {
         const NOISE_AMOUNT = 8;
         const alteredColor = new Color(originalColor);
-
-        alteredColor.r += min(max(pseudorandom.integer(-NOISE_AMOUNT, NOISE_AMOUNT), 0), 255);
-        alteredColor.g += min(max(pseudorandom.integer(-NOISE_AMOUNT, NOISE_AMOUNT), 0), 255);
-        alteredColor.b += min(max(pseudorandom.integer(-NOISE_AMOUNT, NOISE_AMOUNT), 0), 255);
-
+        alteredColor.addNoise(NOISE_AMOUNT);
         return color(alteredColor.r, alteredColor.g, alteredColor.b);
     }
 
@@ -188,8 +202,8 @@ class TelarBuilder {
     }
 
     build(dimensions) {
-        const telarWidth = 8;
-        const telarHeight = 8; 
+        const telarWidth = 400;
+        const telarHeight = 400; 
 
         const telar = new Telar(telarWidth, telarHeight);
     
@@ -210,9 +224,9 @@ class TelarBuilder {
         let selectedTreadlePattern = this.colorPatterns[pseudorandom.integer(0, this.colorPatterns.length - 1)];
 
 
-        // selectedPalette = this.colorPalettes[this.colorPalettes.length - 1];  // FOR TESTING ONLY
+        selectedPalette = this.colorPalettes[this.colorPalettes.length - 1];  // FOR TESTING ONLY
         // selectedThreadPattern = this.colorPatterns[this.colorPatterns.length - 1];  // FOR TESTING ONLY
-        // selectedTreadlePattern = this.colorPatterns[this.colorPatterns.length - 1];  // FOR TESTING ONLY
+        selectedTreadlePattern = this.colorPatterns[this.colorPatterns.length - 1];  // FOR TESTING ONLY
 
         console.log(selectedThreadPattern, selectedTreadlePattern);
         

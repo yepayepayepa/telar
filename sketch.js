@@ -46,7 +46,7 @@ function windowResized() {
 // Saves the artwork as an image of DESIRED_SIZE_IN_PIXELS size when the S key is pressed
 // taking into consideration the pixel density of the user's display
 function keyPressed() {
-    const DESIRED_SIZE_IN_PIXELS = 5000;
+    const DESIRED_SIZE_IN_PIXELS = 6000;
   
     if (key == 's' || key == 'S') {
         resizeCanvas(DESIRED_SIZE_IN_PIXELS / pixelDensity(), DESIRED_SIZE_IN_PIXELS / pixelDensity());
