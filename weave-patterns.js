@@ -137,8 +137,6 @@ const specialPatterns = [
     },
 ];
 
-const basic4x4Patterns = [];
-
 const basicSeries = [
     [4,3,2,1],
     [4,3,2,1,2,3,4,3,2,1,4,3,2,1],
@@ -223,19 +221,26 @@ const basicTieUps = [
 ],
 ];
 
+function combineSeriesWithTieUps(series, tieUps) {
+    const result = [];
 
-for (let i = 0; i < basicTieUps.length; i++) {
-    const basicTieUp = basicTieUps[i];
-    for (let j = 0; j < basicSeries.length; j++) {
-        const basicThread = basicSeries[j];
-        for (let k = 0; k < basicSeries.length; k++) {
-            const basicTreadle = basicSeries[k];
-            basic4x4Patterns.push({
-                threading: basicThread,
-                treadling: basicTreadle,
-                tieUp: basicTieUp
-            })
+    for (let i = 0; i < tieUps.length; i++) {
+        const tieUp = tieUps[i];
+        for (let j = 0; j < series.length; j++) {
+            const threadSeries = series[j];
+            for (let k = 0; k < series.length; k++) {
+                const treadleSeries = series[k];
+                result.push({
+                    threading: threadSeries,
+                    treadling: treadleSeries,
+                    tieUp: tieUp
+                })
+            }
+            
         }
-        
     }
+    
+    return result;
 }
+
+const basic4x4Patterns = combineSeriesWithTieUps(basicSeries, basicTieUps);

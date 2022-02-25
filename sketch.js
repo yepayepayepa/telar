@@ -23,8 +23,8 @@ function setup() {
 function draw() {
     background("#ebedf1");
     telar.weave();
-
     addGrain(15);
+    fxpreview();
 }
 
 function addGrain(n){
