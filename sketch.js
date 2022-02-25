@@ -14,7 +14,7 @@ function setup() {
 
     telarBuilder.addColorPatterns(colorPatterns);
 
-    telar = telarBuilder.build({ x: 0, y: 0, width: 400, height: 400,});
+    telar = telarBuilder.build(400, 400, 0.125);
 
     createCanvas(windowWidth, windowHeight);
     noLoop();

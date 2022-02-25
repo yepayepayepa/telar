@@ -24,9 +24,10 @@ class TelarAxis {
 }
 
 class Telar {
-    constructor(threadingLength, treadlingLength) {
+    constructor(threadingLength, treadlingLength, looseness) {
         this.threading = new TelarAxis(threadingLength);
         this.treadling = new TelarAxis(treadlingLength);
+        this.looseness = looseness;
     }
 
     setThreadingColors(colors, start = 0) {
@@ -91,21 +92,22 @@ class Telar {
 
     render(cross) {
         const HI_RES_CORRECTION = 0.9;
+        const SHADOW_COLOR = "rgba(0, 0, 0, 0.5)";
+        const SHADOW_WEIGHT = 0.3;
 
         noStroke();
     
-        const looseness = 0.1;
         const drawCrossThread = (thread, frame) => {
-            const lx = frame.width * looseness;
-            const ly = frame.height * looseness;
+            const lx = frame.width * this.looseness;
+            const ly = frame.height * this.looseness;
 
             if(thread.orientation === THREAD_VERTICAL) {
                 noStroke();
                 fill(thread.color);
                 rect(dimensionlessx(frame.x + lx), dimensionlessy(frame.y - ly * HI_RES_CORRECTION), dimensionless(frame.width - lx * 2), dimensionless(frame.height + lx * 2 * HI_RES_CORRECTION));
 
-                strokeWeight(0.5);
-                stroke("rgba(0, 0, 0, 0.5)");
+                strokeWeight(SHADOW_WEIGHT);
+                stroke(SHADOW_COLOR);
                 line(
                     dimensionlessx(frame.x + lx) + dimensionless(frame.width - lx * 2), dimensionlessy(frame.y - ly * HI_RES_CORRECTION),
                     dimensionlessx(frame.x + lx) + dimensionless(frame.width - lx * 2), dimensionlessy(frame.y - ly * HI_RES_CORRECTION) + dimensionless(frame.height + lx * 2 * HI_RES_CORRECTION)
@@ -116,8 +118,8 @@ class Telar {
                 fill(thread.color);
                 rect(dimensionlessx(frame.x - lx * HI_RES_CORRECTION), dimensionlessy(frame.y + ly), dimensionless(frame.width + lx * 2 * HI_RES_CORRECTION), dimensionless(frame.height - ly * 2));
 
-                strokeWeight(0.5);
-                stroke("rgba(0, 0, 0, 0.5)");
+                strokeWeight(SHADOW_WEIGHT);
+                stroke(SHADOW_COLOR);
                 line(
                     dimensionlessx(frame.x - lx * HI_RES_CORRECTION), dimensionlessy(frame.y + ly) + dimensionless(frame.height - ly * 2),
                     dimensionlessx(frame.x - lx * HI_RES_CORRECTION) + dimensionless(frame.width + lx * 2 * HI_RES_CORRECTION), dimensionlessy(frame.y + ly) + dimensionless(frame.height - ly * 2)
@@ -201,11 +203,11 @@ class TelarBuilder {
         this.weavePatterns = this.weavePatterns.concat(weavePatterns);
     }
 
-    build(dimensions) {
-        const telarWidth = 400;
-        const telarHeight = 400; 
-
-        const telar = new Telar(telarWidth, telarHeight);
+    build(telarWidth, telarHeight, tightness) {
+        console.log("Building the weave...");
+        console.log(this.weavePatterns);
+        
+        const telar = new Telar(telarWidth, telarHeight, tightness);
     
         const weavePattern = this.weavePatterns[pseudorandom.integer(0, this.weavePatterns.length - 1)];
         // const weavePattern = this.weavePatterns[1];
@@ -226,7 +228,7 @@ class TelarBuilder {
 
         selectedPalette = this.colorPalettes[this.colorPalettes.length - 1];  // FOR TESTING ONLY
         // selectedThreadPattern = this.colorPatterns[this.colorPatterns.length - 1];  // FOR TESTING ONLY
-        selectedTreadlePattern = this.colorPatterns[this.colorPatterns.length - 1];  // FOR TESTING ONLY
+        // selectedTreadlePattern = this.colorPatterns[this.colorPatterns.length - 1];  // FOR TESTING ONLY
 
         console.log(selectedThreadPattern, selectedTreadlePattern);
         
