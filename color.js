@@ -1,7 +1,7 @@
 class Color {
     constructor(v1, v2, v3) {
-        if(typeof(v1) === "string" && v1.startsWith("#") && v2 === undefined && v3 === undefined) {
-            hex = v1.replace('#', '');
+        if(typeof(v1) === "string" && v1.trim().startsWith("#") && v2 === undefined && v3 === undefined) {
+            hex = v1.trim().replace('#', '');
 
             var bigint = parseInt(hex, 16);
 
