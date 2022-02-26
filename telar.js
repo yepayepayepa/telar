@@ -121,8 +121,8 @@ class Telar {
                 strokeWeight(SHADOW_WEIGHT);
                 stroke(SHADOW_COLOR);
                 line(
-                    dimensionlessx(frame.x - lx * HI_RES_CORRECTION), dimensionlessy(frame.y + ly) + dimensionless(frame.height - ly * 2),
-                    dimensionlessx(frame.x - lx * HI_RES_CORRECTION) + dimensionless(frame.width + lx * 2 * HI_RES_CORRECTION), dimensionlessy(frame.y + ly) + dimensionless(frame.height - ly * 2)
+                    dimensionlessx(frame.x - lx * HI_RES_CORRECTION), dimensionlessy(frame.y + ly),
+                    dimensionlessx(frame.x - lx * HI_RES_CORRECTION) + dimensionless(frame.width + lx * 2 * HI_RES_CORRECTION), dimensionlessy(frame.y + ly)
                 );
             }
 

@@ -1,6 +1,5 @@
 function calculateFeatures() {
     const features = {
-        "Tiles": "Many",
     }
 
     // console.log(JSON.stringify(features, null, 4));

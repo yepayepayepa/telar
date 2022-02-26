@@ -10,6 +10,8 @@ function setup() {
     telarBuilder.addWeavePatterns(specialPatterns);
     telarBuilder.addWeavePatterns(foursPatterns);
     telarBuilder.addWeavePatterns(eightsPatterns);
+    telarBuilder.addWeavePatterns(sixteensPatterns);
+    
 
     telarBuilder.addColorPalettes(colorPalettes);
 
