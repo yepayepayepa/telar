@@ -22,7 +22,7 @@ function setup() {
 }
 
 function draw() {
-    background("#fef0d9");
+    background(0);
     telar.weave();
     addGrain(15);
     fxpreview();
