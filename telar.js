@@ -92,7 +92,7 @@ class Telar {
 
     render(cross) {
         const HI_RES_CORRECTION = 0.9;
-        const SHADOW_COLOR = "rgba(0, 0, 0, 0.5)";
+        const SHADOW_COLOR = "rgba(0, 0, 0, 0.7)";
         const SHADOW_WEIGHT = 0.3;
 
         noStroke();
@@ -163,9 +163,9 @@ class Telar {
     }
 
     noiseColor(originalColor) {
-        const NOISE_AMOUNT = 8;
+        const noiseAmount = pseudorandom.integer(8, 16);
         const alteredColor = new Color(originalColor);
-        alteredColor.addNoise(NOISE_AMOUNT);
+        alteredColor.addNoise(noiseAmount);
         return color(alteredColor.r, alteredColor.g, alteredColor.b);
     }
 

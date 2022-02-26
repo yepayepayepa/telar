@@ -3,18 +3,19 @@ let telar;
 function setup() {
     pseudorandom.fxhash();
 
-    const TELAR_RESOLUTION = 400;
+    const TELAR_RESOLUTION = 360;
 
     const telarBuilder = new TelarBuilder(TELAR_RESOLUTION);
 
     telarBuilder.addWeavePatterns(specialPatterns);
     telarBuilder.addWeavePatterns(foursPatterns);
+    telarBuilder.addWeavePatterns(eightsPatterns);
 
     telarBuilder.addColorPalettes(colorPalettes);
 
     telarBuilder.addColorPatterns(colorPatterns);
 
-    telar = telarBuilder.build(400, 400, 0.125);
+    telar = telarBuilder.build(TELAR_RESOLUTION, TELAR_RESOLUTION, pseudorandom.decimal(0.07, 0.2));
 
     createCanvas(windowWidth, windowHeight);
     noLoop();
