@@ -26,7 +26,7 @@ function setup() {
 function draw() {
     background(0);
     telar.weave();
-    addGrain(15);
+    addGrain(7);
     fxpreview();
 }
 
