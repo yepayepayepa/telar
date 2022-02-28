@@ -11,13 +11,11 @@ function setup() {
     telarBuilder.addWeavePatterns(foursPatterns);
     telarBuilder.addWeavePatterns(eightsPatterns);
     telarBuilder.addWeavePatterns(sixteensPatterns);
-    
-
     telarBuilder.addColorPalettes(colorPalettes);
-
     telarBuilder.addColorPatterns(colorPatterns);
 
     telar = telarBuilder.build(TELAR_RESOLUTION, TELAR_RESOLUTION, pseudorandom.decimal(0.07, 0.2));
+    console.log(telar);
 
     createCanvas(windowWidth, windowHeight);
     noLoop();
@@ -27,6 +25,7 @@ function draw() {
     background(0);
     telar.weave();
     addGrain(7);
+    
     fxpreview();
 }
 

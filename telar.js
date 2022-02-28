@@ -24,9 +24,10 @@ class TelarAxis {
 }
 
 class Telar {
-    constructor(threadingLength, treadlingLength, looseness) {
+    constructor(threadingLength, treadlingLength, colorPalette, looseness) {
         this.threading = new TelarAxis(threadingLength);
         this.treadling = new TelarAxis(treadlingLength);
+        this.colorPalette = colorPalette;
         this.looseness = looseness;
     }
 
@@ -50,7 +51,7 @@ class Telar {
         this.tieUp = tieUp;
     }
 
-    weave(render) {
+    weave() {
         this.telarMatrix = [];
 
         let threadValue, treadleValue, over, under;
@@ -92,7 +93,7 @@ class Telar {
 
     render(cross) {
         const HI_RES_CORRECTION = 0.9;
-        const SHADOW_COLOR = "rgba(0, 0, 0, 0.7)";
+        const SHADOW_COLOR = "rgba(0, 0, 0, 0.5)";
 
         noStroke();
     
@@ -105,7 +106,7 @@ class Telar {
                 fill(thread.color);
                 rect(dimensionlessx(frame.x + lx), dimensionlessy(frame.y - ly * HI_RES_CORRECTION), dimensionless(frame.width - lx * 2), dimensionless(frame.height + lx * 2 * HI_RES_CORRECTION));
 
-                strokeWeight(pseudorandom.decimal(0.3, 0.6));
+                strokeWeight(pseudorandom.decimal(0.1, 0.6));
                 stroke(SHADOW_COLOR);
                 line(
                     dimensionlessx(frame.x + lx) + dimensionless(frame.width - lx * 2), dimensionlessy(frame.y - ly * HI_RES_CORRECTION),
@@ -117,7 +118,7 @@ class Telar {
                 fill(thread.color);
                 rect(dimensionlessx(frame.x - lx * HI_RES_CORRECTION), dimensionlessy(frame.y + ly), dimensionless(frame.width + lx * 2 * HI_RES_CORRECTION), dimensionless(frame.height - ly * 2));
 
-                strokeWeight(pseudorandom.decimal(0.3, 0.6));
+                strokeWeight(pseudorandom.decimal(0.1, 0.5));
                 stroke(SHADOW_COLOR);
                 line(
                     dimensionlessx(frame.x - lx * HI_RES_CORRECTION), dimensionlessy(frame.y + ly),
@@ -204,16 +205,47 @@ class TelarBuilder {
 
 
 
-    overlapWeavePattern(telar, weavePattern, type, start, end) {
-        console.log(telar);
+    overlapWeavePattern(telar, newWeavePattern, type, start, end) {
+        console.log(telar.tieUp);
+        console.log(newWeavePattern.tieUp);
+
+        let newRowNumber = telar.tieUp.length;
+        let newColNumber = telar.tieUp[0].length;
+        if(type == HORIZONTAL) {
+            newRowNumber += newWeavePattern.tieUp.length;
+            newColNumber = Math.max(telar.tieUp.length, newWeavePattern.tieUp.length);
+        }
+        if(type == VERTICAL) {
+            newColNumber += newWeavePattern.tieUp[0].length;
+            newRowNumber = Math.max(telar.tieUp[0].length, newWeavePattern.tieUp[0].length);
+        }
+
+        const newTieUp = new Array(newRowNumber);
+        for (let i = 0; i < newRowNumber; i++) {
+            newTieUp[i] = new Array(newColNumber);
+            for (let j = 0; j < newColNumber; j++) {
+                newTieUp[i][j] = 0;
+                if(i < telar.tieUp.length && j < telar.tieUp[0].length) {
+                    newTieUp[i][j] = telar.tieUp[i][j];
+                } else {
+                    if(type == HORIZONTAL && i >= telar.tieUp.length ||
+                        type == VERTICAL && j >= telar.tieUp[0].length) {
+                        newTieUp[i][j] = newWeavePattern.tieUp[i % newWeavePattern.tieUp.length][j % newWeavePattern.tieUp[0].length];
+                    }
+                }
+                // if(j < newWeavePattern.tieUp[0].length && i - telar.tieUp.length < newWeavePattern.tieUp.length) {
+                //     newTieUp[i][j] = newWeavePattern.tieUp[i - telar.tieUp.length][j];
+                // }
+                // if(i < newWeavePattern.tieUp.length && j - telar.tieUp[0].length < newWeavePattern.tieUp[0].length) {
+                //     newTieUp[i][j] = newWeavePattern.tieUp[i][j - telar.tieUp[0].length];
+                // }
+            }
+        }
+
+        telar.tieUp = newTieUp;
     }
 
-    build(telarWidth, telarHeight, tightness) {
-        console.log("Building the weave...");
-        console.log(this.weavePatterns);
-        
-        const telar = new Telar(telarWidth, telarHeight, tightness);
-    
+    build(telarWidth, telarHeight, tightness) {        
         const baseWeavePattern = this.weavePatterns[pseudorandom.integer(0, this.weavePatterns.length - 1)];
         // const baseWeavePattern = this.weavePatterns[1];
         
@@ -229,20 +261,20 @@ class TelarBuilder {
         let selectedPalette = this.colorPalettes[pseudorandom.integer(0, this.colorPalettes.length - 1)];
         let selectedThreadPattern = this.colorPatterns[pseudorandom.integer(0, this.colorPatterns.length - 1)];
         let selectedTreadlePattern = this.colorPatterns[pseudorandom.integer(0, this.colorPatterns.length - 1)];
-
-
+        
+        
         // selectedPalette = this.colorPalettes[this.colorPalettes.length - 1];  // FOR TESTING ONLY
         // selectedThreadPattern = this.colorPatterns[this.colorPatterns.length - 1];  // FOR TESTING ONLY
         // selectedTreadlePattern = this.colorPatterns[this.colorPatterns.length - 1];  // FOR TESTING ONLY
-
-        console.log(selectedPalette, selectedThreadPattern, selectedTreadlePattern);
-
-        const baseThreadingColors = pseudorandom.integer(1, selectedPalette.length);
-        const baseTreadlingColors = pseudorandom.integer(baseThreadingColors > 1 ? 1 : 2, selectedPalette.length);
+                
+        const baseThreadingColorNumber = pseudorandom.integer(1, selectedPalette.length);
+        const baseTreadlingColorNumber = pseudorandom.integer(baseThreadingColorNumber > 1 ? 1 : 2, selectedPalette.length);
         
+        const telar = new Telar(telarWidth, telarHeight, selectedPalette, tightness);
+
         telar.setThreadingColors(telar.generateColorSeries(
                 telarHeight, 
-                selectColorsFromPalette(selectedPalette, baseThreadingColors),
+                selectColorsFromPalette(selectedPalette, baseThreadingColorNumber),
                 selectedThreadPattern
             ));
         telar.setThreadingSeries(telar.generateNumberSeries(
@@ -252,7 +284,7 @@ class TelarBuilder {
         
         telar.setTreadlingColors(telar.generateColorSeries(
                 telarWidth, 
-                selectColorsFromPalette(selectedPalette, baseTreadlingColors),
+                selectColorsFromPalette(selectedPalette, baseTreadlingColorNumber),
                 selectedTreadlePattern
             ));
         telar.setTreadlingSeries(telar.generateNumberSeries(
