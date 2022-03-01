@@ -48,8 +48,13 @@ function windowResized() {
 // taking into consideration the pixel density of the user's display
 function keyPressed() {
   
-    if (key == "r" || key == "R") {
-        telar.reverted = !telar.reverted;
+    if (keyCode === LEFT_ARROW || keyCode === RIGHT_ARROW) {
+        telar.invertedX = !telar.invertedX;
+        redraw();
+    }
+
+    if (keyCode === UP_ARROW || keyCode === DOWN_ARROW) {
+        telar.invertedY = !telar.invertedY;
         redraw();
     }
 

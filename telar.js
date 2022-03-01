@@ -29,7 +29,8 @@ class Telar {
         this.treadling = new TelarAxis(treadlingLength);
         this.colorPalette = colorPalette;
         this.looseness = looseness;
-        this.reverted = false;
+        this.invertedX = false;
+        this.invertedY = false;
     }
 
     setThreadingColors(colors, start = 0) {
@@ -101,34 +102,44 @@ class Telar {
             const lx = frame.width * this.looseness;
             const ly = frame.height * this.looseness;
 
+            let usedX = frame.x;
+            let usedY = frame.y;
+
+            if(this.invertedX) {
+                usedX = 1 - usedX;
+            }
+            if(this.invertedY) {
+                usedY = 1 - usedY;
+            }
+
             if(thread.orientation === VERTICAL) {
                 noStroke();
                 fill(thread.color);
-                rect(dimensionlessx(frame.x + lx), dimensionlessy(frame.y - ly * HI_RES_CORRECTION), dimensionless(frame.width - lx * 2), dimensionless(frame.height + lx * 2 * HI_RES_CORRECTION));
+                rect(dimensionlessx(usedX + lx), dimensionlessy(usedY - ly * HI_RES_CORRECTION), dimensionless(frame.width - lx * 2), dimensionless(frame.height + lx * 2 * HI_RES_CORRECTION));
 
                 strokeWeight(pseudorandom.decimal(0.1, 0.6));
                 stroke(SHADOW_COLOR);
                 line(
-                    dimensionlessx(frame.x + lx) + dimensionless(frame.width - lx * 2), dimensionlessy(frame.y - ly * HI_RES_CORRECTION),
-                    dimensionlessx(frame.x + lx) + dimensionless(frame.width - lx * 2), dimensionlessy(frame.y - ly * HI_RES_CORRECTION) + dimensionless(frame.height + lx * 2 * HI_RES_CORRECTION)
+                    dimensionlessx(usedX + lx) + dimensionless(frame.width - lx * 2), dimensionlessy(usedY - ly * HI_RES_CORRECTION),
+                    dimensionlessx(usedX + lx) + dimensionless(frame.width - lx * 2), dimensionlessy(usedY - ly * HI_RES_CORRECTION) + dimensionless(frame.height + lx * 2 * HI_RES_CORRECTION)
                 );
             }
             if(thread.orientation === HORIZONTAL) {
                 noStroke();
                 fill(thread.color);
-                rect(dimensionlessx(frame.x - lx * HI_RES_CORRECTION), dimensionlessy(frame.y + ly), dimensionless(frame.width + lx * 2 * HI_RES_CORRECTION), dimensionless(frame.height - ly * 2));
+                rect(dimensionlessx(usedX - lx * HI_RES_CORRECTION), dimensionlessy(usedY + ly), dimensionless(frame.width + lx * 2 * HI_RES_CORRECTION), dimensionless(frame.height - ly * 2));
 
                 strokeWeight(pseudorandom.decimal(0.1, 0.5));
                 stroke(SHADOW_COLOR);
                 line(
-                    dimensionlessx(frame.x - lx * HI_RES_CORRECTION), dimensionlessy(frame.y + ly),
-                    dimensionlessx(frame.x - lx * HI_RES_CORRECTION) + dimensionless(frame.width + lx * 2 * HI_RES_CORRECTION), dimensionlessy(frame.y + ly)
+                    dimensionlessx(usedX - lx * HI_RES_CORRECTION), dimensionlessy(usedY + ly),
+                    dimensionlessx(usedX - lx * HI_RES_CORRECTION) + dimensionless(frame.width + lx * 2 * HI_RES_CORRECTION), dimensionlessy(usedY + ly)
                 );
             }
 
         };
 
-        if(!this.reverted) {
+        if(!this.invertedX) {
             drawCrossThread(cross.under, cross.frame);
             drawCrossThread(cross.over, cross.frame);
         } else {
