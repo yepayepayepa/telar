@@ -102,12 +102,25 @@ pseudorandom = {
         return result.slice(0, n);
     },
     pickAllowingRepeatedButNotAllTheSame(list, n) {
-        // const colorIndices = pseudorandom.integers(numberOfColors, 0, colorPalette.length - 1);
-        // const result = [];
-        // for (let i = 0; i < colorIndices.length; i++) {
-        //     result.push(colorPalette[colorIndices[i]]);
-        // }
-        // return result;
+        const result = [];
+        let firstPick, lastPick;
+        let areTheSame = true;
+        while(result.length < n) {
+            if(firstPick === undefined) {
+                lastPick = firstPick = pseudorandom.pick(list);
+            } else {
+                lastPick = pseudorandom.pick(list);
+                if(lastPick != firstPick) {
+                    areTheSame = false;
+                }
+            }
+            result.push(lastPick);
+        }
+
+        if(n > 1 && areTheSame) {
+            result[pseudorandom.integer(0, result.length - 1)] = pseudorandom.pickButNot(list, result);
+        }
+        return result;
     },
     pick(list) {
         return list[this.integer(0, list.length - 1)];

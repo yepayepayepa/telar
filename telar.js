@@ -60,7 +60,6 @@ class Telar {
             treadleValue = this.treadling.data[i].value - 1;
             for (let j = 0; j < this.threading.data.length; j++) {
                 threadValue = this.threading.data[j].value - 1;
-
                 if(this.tieUp[treadleValue][threadValue] > 0) {
                     over = VERTICAL;
                     under = HORIZONTAL;
@@ -184,8 +183,7 @@ class Telar {
 
 
 class TelarBuilder {
-    constructor(resolution) {
-        this.resolution = resolution;
+    constructor() {
         this.weavePatterns = [];
         this.colorPalettes = [];
         this.colorPatterns = [];
@@ -205,19 +203,19 @@ class TelarBuilder {
 
 
 
-    overlapWeavePattern(telar, newWeavePattern, type, start, end) {
-        console.log(telar.tieUp);
-        console.log(newWeavePattern.tieUp);
+    overlapWeavePattern(telar, newWeavePattern, type, start, count) {
+        // console.log("ENTRADAS", telar.tieUp.length, newWeavePattern.tieUp.length, type);
 
         let newRowNumber = telar.tieUp.length;
         let newColNumber = telar.tieUp[0].length;
+
         if(type == HORIZONTAL) {
             newRowNumber += newWeavePattern.tieUp.length;
-            newColNumber = Math.max(telar.tieUp.length, newWeavePattern.tieUp.length);
+            newColNumber = Math.max(telar.tieUp[0].length, newWeavePattern.tieUp[0].length);
         }
         if(type == VERTICAL) {
+            newRowNumber = Math.max(telar.tieUp.length, newWeavePattern.tieUp.length);
             newColNumber += newWeavePattern.tieUp[0].length;
-            newRowNumber = Math.max(telar.tieUp[0].length, newWeavePattern.tieUp[0].length);
         }
 
         const newTieUp = new Array(newRowNumber);
@@ -233,38 +231,39 @@ class TelarBuilder {
                         newTieUp[i][j] = newWeavePattern.tieUp[i % newWeavePattern.tieUp.length][j % newWeavePattern.tieUp[0].length];
                     }
                 }
-                // if(j < newWeavePattern.tieUp[0].length && i - telar.tieUp.length < newWeavePattern.tieUp.length) {
-                //     newTieUp[i][j] = newWeavePattern.tieUp[i - telar.tieUp.length][j];
-                // }
-                // if(i < newWeavePattern.tieUp.length && j - telar.tieUp[0].length < newWeavePattern.tieUp[0].length) {
-                //     newTieUp[i][j] = newWeavePattern.tieUp[i][j - telar.tieUp[0].length];
-                // }
             }
         }
+
+        const newPatternColor = pseudorandom.pick(telar.colorPalette);
+
+        if(type == VERTICAL) {
+            for (let i = start; i < start + count && i < telar.threading.data.length; i++) {
+                telar.threading.data[i].value = telar.tieUp[0].length + newWeavePattern.threading[i % newWeavePattern.threading.length];
+                telar.threading.data[i].color = newPatternColor;
+            }
+        }
+        if(type == HORIZONTAL) {
+            for (let i = start; i < start + count && i < telar.treadling.data.length; i++) {
+                telar.treadling.data[i].value = telar.tieUp.length + newWeavePattern.treadling[i % newWeavePattern.treadling.length];
+                telar.treadling.data[i].color = newPatternColor;
+            }
+        }
+
+        // console.log("QUE PEDO", newTieUp.length);
 
         telar.tieUp = newTieUp;
     }
 
-    build(telarWidth, telarHeight, tightness) {        
+    build(telarSize, tightness) {        
         const baseWeavePattern = this.weavePatterns[pseudorandom.integer(0, this.weavePatterns.length - 1)];
-        // const baseWeavePattern = this.weavePatterns[1];
         
-        const selectColorsFromPalette = (colorPalette, numberOfColors) => {
-            const colorIndices = pseudorandom.selectIntegersFromRange(numberOfColors, 0, colorPalette.length - 1);
-            const result = [];
-            for (let i = 0; i < colorIndices.length; i++) {
-                result.push(colorPalette[colorIndices[i]]);
-            }
-            return result;
-        }
-
         let selectedPalette = this.colorPalettes[pseudorandom.integer(0, this.colorPalettes.length - 1)];
         let selectedThreadPattern = this.colorPatterns[pseudorandom.integer(0, this.colorPatterns.length - 1)];
         let selectedTreadlePattern = this.colorPatterns[pseudorandom.integer(0, this.colorPatterns.length - 1)];
         
         // selectedPalette = this.colorPalettes[this.colorPalettes.length - 1];  // FOR TESTING ONLY
         // selectedThreadPattern = this.colorPatterns[this.colorPatterns.length - 1];  // FOR TESTING ONLY
-        selectedTreadlePattern = this.colorPatterns[this.colorPatterns.length - 1];  // FOR TESTING ONLY
+        // selectedTreadlePattern = this.colorPatterns[this.colorPatterns.length - 1];  // FOR TESTING ONLY
 
         if(pseudorandom.boolean()) {
             selectedThreadPattern.reverse();
@@ -273,39 +272,48 @@ class TelarBuilder {
             selectedTreadlePattern.reverse();
         }
         
-        console.log(selectedThreadPattern);
-        console.log(selectedTreadlePattern);
-
         const baseThreadingColorNumber = pseudorandom.integer(2, selectedPalette.length);
         const baseTreadlingColorNumber = pseudorandom.integer(2, selectedPalette.length);
         
-        const telar = new Telar(telarWidth, telarHeight, selectedPalette, tightness);
+        const telar = new Telar(telarSize, telarSize, selectedPalette, tightness);
 
         telar.setThreadingColors(telar.generateColorSeries(
-                telarHeight, 
-                selectColorsFromPalette(selectedPalette, baseThreadingColorNumber),
+                telarSize, 
+                pseudorandom.pickAllowingRepeatedButNotAllTheSame(selectedPalette, baseThreadingColorNumber),
                 selectedThreadPattern
             ));
         telar.setThreadingSeries(telar.generateNumberSeries(
-                telarWidth, 
+                telarSize, 
                 baseWeavePattern.threading
             ));
         
         telar.setTreadlingColors(telar.generateColorSeries(
-                telarWidth, 
-                selectColorsFromPalette(selectedPalette, baseTreadlingColorNumber),
+                telarSize, 
+                pseudorandom.pickAllowingRepeatedButNotAllTheSame(selectedPalette, baseTreadlingColorNumber),
                 selectedTreadlePattern
             ));
         telar.setTreadlingSeries(telar.generateNumberSeries(
-                telarHeight, 
+                telarSize, 
                 baseWeavePattern.treadling
             ));
     
         telar.setTieUp(baseWeavePattern.tieUp);
 
         
-        this.overlapWeavePattern(telar, this.weavePatterns[pseudorandom.integer(0, this.weavePatterns.length - 1)], VERTICAL, 0, 100);
+        // this.overlapWeavePattern(telar, this.weavePatterns[pseudorandom.integer(0, this.weavePatterns.length - 1)], HORIZONTAL, pseudorandom.integer(0, 222), 137);
+        // this.overlapWeavePattern(telar, this.weavePatterns[pseudorandom.integer(0, this.weavePatterns.length - 1)], VERTICAL, pseudorandom.integer(0, 270), 89);
         
+        let patternWidth = telarSize;
+        let type;
+
+        while(Math.floor(patternWidth /= 1.618) >= 1) {
+            if(pseudorandom.boolean()) {
+                type = VERTICAL;
+            } else {
+                type = HORIZONTAL;
+            }
+            this.overlapWeavePattern(telar, this.weavePatterns[pseudorandom.integer(0, this.weavePatterns.length - 1)], type, pseudorandom.integer(0, telarSize - Math.floor(patternWidth) - 1), Math.floor(patternWidth));
+        }
 
         return telar;
     }

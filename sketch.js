@@ -6,7 +6,7 @@ function setup() {
 
     const TELAR_RESOLUTION = 360;
 
-    const telarBuilder = new TelarBuilder(TELAR_RESOLUTION);
+    const telarBuilder = new TelarBuilder();
 
     telarBuilder.addWeavePatterns(specialPatterns);
     telarBuilder.addWeavePatterns(foursPatterns);
@@ -15,7 +15,7 @@ function setup() {
     telarBuilder.addColorPalettes(colorPalettes);
     telarBuilder.addColorPatterns(colorPatterns);
 
-    telar = telarBuilder.build(TELAR_RESOLUTION, TELAR_RESOLUTION, pseudorandom.decimal(0.07, 0.2));
+    telar = telarBuilder.build(TELAR_RESOLUTION, pseudorandom.decimal(0.07, 0.2));
     console.log(telar);
 
     createCanvas(windowWidth, windowHeight);
