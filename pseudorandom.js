@@ -101,8 +101,27 @@ pseudorandom = {
       
         return result.slice(0, n);
     },
+    pickAllowingRepeatedButNotAllTheSame(list, n) {
+        // const colorIndices = pseudorandom.integers(numberOfColors, 0, colorPalette.length - 1);
+        // const result = [];
+        // for (let i = 0; i < colorIndices.length; i++) {
+        //     result.push(colorPalette[colorIndices[i]]);
+        // }
+        // return result;
+    },
     pick(list) {
         return list[this.integer(0, list.length - 1)];
+    },
+    pickMany(list, n) {
+        if(n === undefined ||  n >= list.length) {
+            return list;
+        } else {
+            const  result = [];
+            while(result.length < n) {
+                result.push(pseudorandom.pickButNot(list, result));
+            }
+            return result;
+        }
     },
     weightedPick(list, weights) {
         let totalWeight = weights.reduce((a, b) => a + b);

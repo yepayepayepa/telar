@@ -2,6 +2,7 @@ let telar;
 
 function setup() {
     pseudorandom.fxhash();
+    console.log(fxhash);
 
     const TELAR_RESOLUTION = 360;
 
@@ -52,6 +53,6 @@ function keyPressed() {
   
     if (key == 's' || key == 'S') {
         resizeCanvas(DESIRED_SIZE_IN_PIXELS / pixelDensity(), DESIRED_SIZE_IN_PIXELS / pixelDensity());
-        saveCanvas('telar_' + fxhash, 'png');
+        saveCanvas('telar_yepayepayepa_' + fxhash, 'png');
     }
 }

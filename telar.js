@@ -250,7 +250,7 @@ class TelarBuilder {
         // const baseWeavePattern = this.weavePatterns[1];
         
         const selectColorsFromPalette = (colorPalette, numberOfColors) => {
-            const colorIndices = pseudorandom.integers(numberOfColors, 0, colorPalette.length - 1);
+            const colorIndices = pseudorandom.selectIntegersFromRange(numberOfColors, 0, colorPalette.length - 1);
             const result = [];
             for (let i = 0; i < colorIndices.length; i++) {
                 result.push(colorPalette[colorIndices[i]]);
@@ -262,13 +262,22 @@ class TelarBuilder {
         let selectedThreadPattern = this.colorPatterns[pseudorandom.integer(0, this.colorPatterns.length - 1)];
         let selectedTreadlePattern = this.colorPatterns[pseudorandom.integer(0, this.colorPatterns.length - 1)];
         
-        
         // selectedPalette = this.colorPalettes[this.colorPalettes.length - 1];  // FOR TESTING ONLY
         // selectedThreadPattern = this.colorPatterns[this.colorPatterns.length - 1];  // FOR TESTING ONLY
-        // selectedTreadlePattern = this.colorPatterns[this.colorPatterns.length - 1];  // FOR TESTING ONLY
-                
-        const baseThreadingColorNumber = pseudorandom.integer(1, selectedPalette.length);
-        const baseTreadlingColorNumber = pseudorandom.integer(baseThreadingColorNumber > 1 ? 1 : 2, selectedPalette.length);
+        selectedTreadlePattern = this.colorPatterns[this.colorPatterns.length - 1];  // FOR TESTING ONLY
+
+        if(pseudorandom.boolean()) {
+            selectedThreadPattern.reverse();
+        }
+        if(pseudorandom.boolean()) {
+            selectedTreadlePattern.reverse();
+        }
+        
+        console.log(selectedThreadPattern);
+        console.log(selectedTreadlePattern);
+
+        const baseThreadingColorNumber = pseudorandom.integer(2, selectedPalette.length);
+        const baseTreadlingColorNumber = pseudorandom.integer(2, selectedPalette.length);
         
         const telar = new Telar(telarWidth, telarHeight, selectedPalette, tightness);
 
