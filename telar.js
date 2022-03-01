@@ -29,6 +29,7 @@ class Telar {
         this.treadling = new TelarAxis(treadlingLength);
         this.colorPalette = colorPalette;
         this.looseness = looseness;
+        this.reverted = false;
     }
 
     setThreadingColors(colors, start = 0) {
@@ -127,8 +128,13 @@ class Telar {
 
         };
 
-        drawCrossThread(cross.under, cross.frame);
-        drawCrossThread(cross.over, cross.frame);
+        if(!this.reverted) {
+            drawCrossThread(cross.under, cross.frame);
+            drawCrossThread(cross.over, cross.frame);
+        } else {
+            drawCrossThread(cross.over, cross.frame);
+            drawCrossThread(cross.under, cross.frame);
+        }
     }
 
     /**
