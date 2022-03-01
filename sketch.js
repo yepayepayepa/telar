@@ -50,11 +50,13 @@ function keyPressed() {
   
     if (keyCode === LEFT_ARROW || keyCode === RIGHT_ARROW) {
         telar.invertedX = !telar.invertedX;
+        telar.revert = !telar.revert;
         redraw();
     }
 
     if (keyCode === UP_ARROW || keyCode === DOWN_ARROW) {
         telar.invertedY = !telar.invertedY;
+        telar.revert = !telar.revert;
         redraw();
     }
 

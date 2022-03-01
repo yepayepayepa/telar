@@ -31,6 +31,8 @@ class Telar {
         this.looseness = looseness;
         this.invertedX = false;
         this.invertedY = false;
+
+        this.revert = false;
     }
 
     setThreadingColors(colors, start = 0) {
@@ -106,10 +108,10 @@ class Telar {
             let usedY = frame.y;
 
             if(this.invertedX) {
-                usedX = 1 - usedX;
+                usedX = 1 - usedX - frame.width;
             }
             if(this.invertedY) {
-                usedY = 1 - usedY;
+                usedY = 1 - usedY - frame.height;
             }
 
             if(thread.orientation === VERTICAL) {
@@ -139,7 +141,7 @@ class Telar {
 
         };
 
-        if(!this.invertedX) {
+        if(!this.revert) {
             drawCrossThread(cross.under, cross.frame);
             drawCrossThread(cross.over, cross.frame);
         } else {
