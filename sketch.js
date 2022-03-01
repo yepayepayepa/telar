@@ -2,7 +2,6 @@ let telar;
 
 function setup() {
     pseudorandom.fxhash();
-    console.log(fxhash);
 
     const TELAR_RESOLUTION = 360;
 
@@ -16,8 +15,6 @@ function setup() {
     telarBuilder.addColorPatterns(colorPatterns);
 
     telar = telarBuilder.build(TELAR_RESOLUTION, pseudorandom.decimal(0.07, 0.2));
-    console.log(telar);
-
     createCanvas(windowWidth, windowHeight);
     noLoop();
 }
@@ -25,8 +22,7 @@ function setup() {
 function draw() {
     background(0);
     telar.weave();
-    addGrain(7);
-    
+    addGrain(7);    
     fxpreview();
 }
 
