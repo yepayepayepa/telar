@@ -223,8 +223,6 @@ class TelarBuilder {
 
 
     overlapWeavePattern(telar, newWeavePattern, type, start, count) {
-        // console.log("ENTRADAS", telar.tieUp.length, newWeavePattern.tieUp.length, type);
-
         let newRowNumber = telar.tieUp.length;
         let newColNumber = telar.tieUp[0].length;
 
@@ -268,12 +266,10 @@ class TelarBuilder {
             }
         }
 
-        // console.log("QUE PEDO", newTieUp.length);
-
         telar.tieUp = newTieUp;
     }
 
-    build(telarSize, tightness) {        
+    build(telarSize, tightness) {       
         const baseWeavePattern = this.weavePatterns[pseudorandom.integer(0, this.weavePatterns.length - 1)];
         
         let selectedPalette = this.colorPalettes[pseudorandom.integer(0, this.colorPalettes.length - 1)];
